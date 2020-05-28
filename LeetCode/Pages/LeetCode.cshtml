@@ -1,0 +1,96 @@
+﻿@page
+@addTagHelper *, Kendo.Mvc
+@using Kendo.Mvc.UI
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "LeetCode";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+<script>
+
+    function CreateInstance() {
+
+        var input = $("#txtInput").val();
+        var integer = parseInt(input, 10);
+        console.log(input);
+        console.log(integer);
+
+        if (integer <= 0) {
+            $("#lblError").addClass("lblError");
+            $("#lblError").text("Please enter proper Inputs.");;
+            $("#spnText").text(integer);
+            return;
+        }
+        else if (input.length >= 5) {
+            $("#lblError").addClass("lblError");
+            $("#lblError").text("Limited this to 4 Digits.Please excuse me");
+            $("#spnText").text("");
+            return
+        }
+
+        $.ajax(
+            {
+                url: "api/EC2/LeetCode",
+                dataType: "text",
+                crossdomain: true,
+                contentType: "application/json",
+                data: input,
+                type: "POST",
+                //define a contentType of your request
+                secure: true,
+                //headers: {
+                //    "Access-Control-Allow-Origin": "*",
+                //    "Access-Control-Allow-Headers": "*"
+                //},
+                success: function (data) {
+                    //alert("Success");
+                    var instanceID = JSON.parse(data);
+                    $("#spnText").text(instanceID.message);
+                },
+                error: function (xhr, errorType, exception) {
+                    var errorMessage = exception || xhr.statusText;
+                    console.log(exception);
+                    console.log(xhr);
+                    alert(errorType + ";  " + errorMessage + " " + exception + "  Status:: " + xhr.statusText);
+                }
+            });
+    }
+</script>
+
+<link href="~/css/CustomStyle.css" rel="stylesheet" />
+<div style="height:40px;">
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-10 col-sm-12 col-lg-10">
+            <div class="row">
+                <div class="well" id="CreateEC2" style="width:60%">
+                    <p>
+                        <label id="lblError" style="display:none"></label>
+                    </p>
+                    <p>
+                        Please Enter your Inputs
+                    </p>
+
+                    <p>
+                        @Html.Kendo().TextBox().Name("InputText").HtmlAttributes(new { @class = "k-textbox", @style = "width: 100%;", @id = "txtInput" })
+                    </p>
+                    <p>
+                        @(Html.Kendo().Button().Name("TextButton")
+                                                                       .Content("Submit")
+                                                                       .HtmlAttributes(new { @class = "textButton k-primary" })
+                                                                       .Events(e => e.Click("CreateInstance")))
+                    </p>
+
+                    <p>
+                        <label id="lblOutput">Output :- <span id="spnText"></span></label>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

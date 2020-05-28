@@ -1,0 +1,54 @@
+﻿@page
+@model LeetCode.Models.Movies
+@{
+    ViewData["Title"] = "EditMovie";
+    Layout = "~/Pages/_Layout.cshtml";
+    var selectlist = new List<SelectListItem>();
+}
+
+
+@using (@Html.BeginForm("EditMovie", "Movies", FormMethod.Post))
+{
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label>MovieName</label>
+            @Html.TextBoxFor(m=>m.MovieName,new  { @id= "txtMovieName", @placeholder = "MovieName", @name = "MovieName", @class="form-control" })
+            <input type="text" id="txtMovieName" placeholder="MovieName" name="MovieName" class="form-control" />
+        </div>
+        <div class="form-group col-md-6">
+            <label>Producer</label>
+            @Html.TextBoxFor(m => m.Producer, new { @id = "txtProducer", @placeholder = "Producer", @name = "Producer", @class = "form-control" })
+            <input type="text" id="txtProducer" placeholder="Producer" name="Producer" class="form-control" />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="txtReleaseDate">DateOfRelease</label>
+            @Html.TextBoxFor(m => m.DateOfRelease, new { @id = "txtReleaseDate", @style = "width:65%" ,  @name = "ReleaseDate", @class = "form-control" })
+            <input type="text" id="txtReleaseDate" class="form-control" name="ReleaseDate" style="width:65%" />
+        </div>
+        <div class="form-group col-md-6">
+            <label for="slctActors">Actors</label>
+
+
+            @*<select id="slctActors" class="mdb-select md-form colorful-select dropdown-primary" multiple style="width:100%"  searchable="Search here.." name="Actors"></select>
+                class="mdb-select md-form colorful-select dropdown-primary" multiple searchable="Search here..">*@
+            <select id="slctActors" class="form-control">
+                @*<optgroup label="Choose your country">
+                        <option value="1">USA</option>
+                        <option value="2">Germany</option>
+                        <option value="3">France</option>
+                        <option value="4">Poland</option>
+                        <option value="5">Japan</option>
+                    </optgroup>*@
+            </select>
+        </div>
+
+    </div>
+
+
+}
+
+
+

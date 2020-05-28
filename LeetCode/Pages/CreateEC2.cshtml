@@ -1,0 +1,177 @@
+﻿@page
+@model LeetCode.Pages.CreateEC2Model
+@addTagHelper *, Kendo.Mvc
+@using Kendo.Mvc.UI
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@{
+    ViewData["Title"] = "CreateEC2";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+<link href="~/css/CustomStyle.css" rel="stylesheet" />
+
+<script type="text/javascript">
+    function CreateInstance() {
+        $.ajax(
+            {
+                url: "api/EC2/CreateEC2",//"https://f1nbyh5aa2.execute-api.us-east-1.amazonaws.com/Dev/movies",
+
+                dataType: "text",
+                crossdomain: true,
+                contentType: "application/json",
+                type: "GET",
+                //define a contentType of your request
+                secure: true,
+                //headers: {
+                //    "Access-Control-Allow-Origin": "*",
+                //    "Access-Control-Allow-Headers": "*"
+                //},
+                success: function (data) {
+                    //alert("Success");
+                    var instanceID = data;
+                    $("#txtInstanceID").text(instanceID);
+                    $("#exampleModal").modal('show');
+
+                    //window.location.reload();
+                },
+                error: function (xhr, errorType, exception) {
+                    var errorMessage = exception || xhr.statusText;
+                    console.log(exception);
+                    console.log(xhr);
+                    alert(errorType + ";  " + errorMessage + " " + exception + "  Status:: " + xhr.statusText);
+                }
+            });
+    }
+</script>
+
+
+<h2 style="margin-top:30px">Play with AWS here </h2>
+
+
+<div class="container-fluid placeholders">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="well" id="CreateEC2">
+                        <p>
+                            Create an EC2 Windows Server here.
+                        </p>
+
+                        <p>
+                            @(Html.Kendo()
+                                        .Button()
+                                        .Name("PrimaryButton")
+                                        .Content("Create")
+                                        .HtmlAttributes(new { @class = "textButton k-primary" }))
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="well" id="CreateEC2">
+                        <p>
+                            Create an EC2 Database Server.
+                        </p>
+                        <p>
+                            @(Html.Kendo()
+                                                .Button()
+                                                .Name("TextButton")
+                                                .Content("DB Server")
+                                                .HtmlAttributes(new { @class = "textButton" }).Events(e => e.Click("CreateInstance")))
+                        </p>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="well" id="CreateEC2">
+                        <p>
+                            Create SnapShot.
+                        </p>
+
+                        <p>
+                            @(Html.Kendo()
+                                                .Button()
+                                                .Name("Button")
+                                                .Content("EC2")
+                                                .HtmlAttributes(new { @class = "textButton k-primary", @style = "width:40%" }))
+                        </p>
+                        <p>
+                            @(Html.Kendo()
+                                                .Button()
+                                                .Name("RDS")
+                                                .Content("RDS")
+                                                .HtmlAttributes(new { @class = "textButton k-primary", @style = "width:40%" }))
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="column">
+                <div class="content-section">
+                    <h3>Rekognition Data</h3>
+                    <p class='text-muted'>
+                        You can put any information here you'd like.
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-light">Latest Posts</li>
+                            <li class="list-group-item list-group-item-light">Announcements</li>
+                            <li class="list-group-item list-group-item-light">Calendars</li>
+                            <li class="list-group-item list-group-item-light">etc</li>
+                        </ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Success</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-row">
+                    <div class="isa_success">
+                        <i class="fa fa-check"></i>
+                        Instance with instance ID - <span id="txtInstanceID"></span> Created Succesfully
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                @*<button type="button" class="btn btn-primary" onclick="Savechanges()">Save changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+@*@using (Html.BeginForm("CreateEC2", "EC2", FormMethod.Get))
+    {
+
+        <div class="container">
+            <div style="height:20px;">
+
+            </div>
+            <div id="createEC2">
+
+                <fieldset>
+                    @Html.Kendo().Button().Name("Ec2").Content("Create EC2 Instance").HtmlAttributes(new { @class = "col-lg-4 btn-primary", id = "btnCreateEC2" })
+                </fieldset>
+            </div>
+
+        </div>
+
+    }*@
+
+

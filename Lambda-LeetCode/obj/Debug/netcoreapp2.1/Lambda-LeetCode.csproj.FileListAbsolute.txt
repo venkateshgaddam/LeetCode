@@ -1,0 +1,11 @@
+C:\Users\vgaddam\source\repos\LeetCode\Lambda-LeetCode\bin\Debug\netcoreapp2.1\Lambda-LeetCode.deps.json
+C:\Users\vgaddam\source\repos\LeetCode\Lambda-LeetCode\bin\Debug\netcoreapp2.1\Lambda-LeetCode.runtimeconfig.json
+C:\Users\vgaddam\source\repos\LeetCode\Lambda-LeetCode\bin\Debug\netcoreapp2.1\Lambda-LeetCode.runtimeconfig.dev.json
+C:\Users\vgaddam\source\repos\LeetCode\Lambda-LeetCode\bin\Debug\netcoreapp2.1\Lambda-LeetCode.dll
+C:\Users\vgaddam\source\repos\LeetCode\Lambda-LeetCode\obj\Debug\netcoreapp2.1\Lambda-LeetCode.csprojAssemblyReference.cache
+C:\Users\vgaddam\source\repos\LeetCode\Lambda-LeetCode\obj\Debug\netcoreapp2.1\Lambda-LeetCode.csproj.CoreCompileInputs.cache
+C:\Users\vgaddam\source\repos\LeetCode\Lambda-LeetCode\obj\Debug\netcoreapp2.1\Lambda-LeetCode.AssemblyInfoInputs.cache
+C:\Users\vgaddam\source\repos\LeetCode\Lambda-LeetCode\obj\Debug\netcoreapp2.1\Lambda-LeetCode.AssemblyInfo.cs
+C:\Users\vgaddam\source\repos\LeetCode\Lambda-LeetCode\bin\Debug\netcoreapp2.1\Lambda-LeetCode.pdb
+C:\Users\vgaddam\source\repos\LeetCode\Lambda-LeetCode\obj\Debug\netcoreapp2.1\Lambda-LeetCode.dll
+C:\Users\vgaddam\source\repos\LeetCode\Lambda-LeetCode\obj\Debug\netcoreapp2.1\Lambda-LeetCode.pdb

@@ -1,0 +1,206 @@
+﻿@page
+@addTagHelper *,Kendo.Mvc
+@using Kendo.Mvc.UI
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model LeetCode.Models.ImageData
+@{
+    ViewData["Title"] = "FactoryPattern";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+<script>
+
+    $(document).ready(function myfunction() {
+        $('#prDynamic').text('This Section makes use of the Factory Design Pattern')
+    });
+
+    function GetCelebrityData() {
+
+        var file = document.querySelector('input[type=file]').files[0];
+        var rekognitionType = "";
+
+        if (!file) {
+            $(".k-header").css({ 'border-color': 'red' });
+            return
+        } else {
+            $(".k-header").css({ 'border-color': 'white' });
+
+            rekognitionType = $("#rCUpload").prop('checked') ? "celebrity" : "image";
+
+            var reader = new FileReader();
+            reader.addEventListener("load", function () { }, false);
+
+            reader.readAsDataURL(file);
+
+            console.log(reader.result.split(',')[1]);
+            var apiInput = reader.result.split(',')[1];
+        }
+
+        $.ajax(
+            {
+                url: "api/Rekognition/GetCelebrity",
+                dataType: "text",
+                crossdomain: true,
+                contentType: "application/json",
+                data: JSON.stringify({
+                    'base64Data': apiInput,
+                    'fileName': file.name,
+                    'fileSize': file.size,
+                    'RekognitionType':rekognitionType
+                }),
+                type: "POST",
+                //define a contentType of your request
+                secure: true,
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Access-Control-Allow-Headers": "*"
+                },
+                success: function (data) {
+                    PopualtePopUpModal(data);
+                    var upload = $("#fUpload").data("kendoUpload");
+                    upload.clearAllFiles();
+                    $('#dvImg').css({ 'display': 'block' });
+                    $('#imgUpload').attr('src', reader.result);
+                },
+                error: function (xhr, errorType, exception) {
+                    var errorMessage = exception || xhr.statusText;
+                    console.log(exception);
+                    console.log(xhr);
+                    alert(errorType + ";  " + errorMessage + " " + exception + "  Status:: " + xhr.statusText);
+                }
+            });
+
+
+        function PopualtePopUpModal(data) {
+
+            if (data == "") {
+                data = "Your Image does not have any celebrity.Please try a new Image";
+            }
+            var arrData = data.split(',');
+
+            $.each(arrData, function (i, arrData) {
+                var lstBody = "<li id='lstgrp' class=list-group-item list-group-item-light>";
+
+                lstBody += arrData + "</li>";
+                $(lstBody).appendTo($(".list-group"));
+                console.log(arrData);
+            })
+            //$('#lstgrp').addClass("list-group-item");
+            //$('#lstgrp').addClass("list-group-item-light");
+            //list-group-item-light
+            $("#txtCelebrityData").text(data);
+            //var body = "<li class=""list-group-item list-group-item-light"">";
+
+            //$("#rekognitionModal").modal('show');
+            console.log(data);
+        }
+    }
+</script>
+
+<link href="~/css/CustomStyle.css" rel="stylesheet" />
+
+<div class="label">
+    <p id="prDynamic" class="lead text-center" style="margin-top:10px"></p>
+</div>
+
+
+<div class="container-fluid placeholder">
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="well" id="rdCelebRekognition" style="font-family:cursive">
+                        <input type="radio" id="rCUpload" class="radio" name="Rekognition" /><label style="font-family:cursive">CelebrityRekognition</label>
+                        @*@Html.Kendo().RadioButton().Name("Rekognition").Label("CelebrityRekognition").HtmlAttributes(new { @id = "rCUpload",@name= "Rekognition" }).Value("Celeb")*@
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="well" id="rdImageRekognition" style="font-family:cursive">
+                        <input type="radio" id="rIUpload" class="radio" name="Rekognition" /><label style="font-family:cursive">ImageRekognition</label>
+                        @*@Html.Kendo().RadioButton().Name("Rekognition").Label("ImageRekognition").HtmlAttributes(new { @id = "rIUpload", @name = "Rekognition" }).Checked(true).Value("Image")*@
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="well" id="celebrityRekognition">
+                        <p style="font-family:cursive">
+                            Image Rekognition
+                        </p>
+
+                        <p>
+                            @Html.Kendo().Upload().Name("UploadFile").HtmlAttributes(new { @style = "width: 60%;", @id = "fUpload" })
+                        </p>
+                        <p>
+                            @(Html.Kendo().Button().Name("TextButton").Content("GetImageData").HtmlAttributes(new { @class = "textButton k-primary", @type = "submit" }).Events(e => e.Click("GetCelebrityData")))
+                        </p>
+
+                    </div>
+                </div>
+
+                @*<div class="col-md-6">
+                        <div class="well" id="imageRekognition">
+                            <p style="font-family:cursive">
+                                Image Rekognition
+                            </p>
+                            <p>
+                                @Html.Kendo().Upload().Name("UploadFile").HtmlAttributes(new { @style = "width: 60%;", @id = "iUpload" })
+                            </p>
+                            <p>
+                                @(Html.Kendo().Button().Name("btnImage").Content("GetImageInfo").HtmlAttributes(new { @class = "textButton k-primary", @type = "submit" }).Events(e => e.Click("GetCelebrityData")))
+                            </p>
+
+                        </div>
+                    </div>*@
+            </div>
+
+            <div class="container-fluid" id="dvImg" style="display:none">
+                <picture>
+                    <img class="img-fluid img-thumbnail" src="./" id="imgUpload" alt="Test" style="padding:5rem;" />
+                </picture>
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+            <div class="column">
+                <div class="content-section">
+                    <h3 style="font-family:cursive">Rekognition Data</h3>
+                    <p class='text-muted'>
+                        <ul class="list-group"></ul>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="rekognitionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Success</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <div class="form-row">
+                    <div class="isa_success">
+                        <i class="fa fa-check"></i>
+                        Rekognition Data - <span id="txtCelebrityData"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                @*<button type="button" class="btn btn-primary" onclick="Savechanges()">Save changes</button>*@
+            </div>
+        </div>
+    </div>
+</div>
+

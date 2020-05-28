@@ -1,0 +1,101 @@
+{
+  "format": 1,
+  "restore": {
+    "C:\\Users\\vgaddam\\source\\repos\\LeetCode\\LeetCodeLambda\\LeetCodeLambda.csproj": {}
+  },
+  "projects": {
+    "C:\\Users\\vgaddam\\source\\repos\\LeetCode\\LeetCodeLambda\\LeetCodeLambda.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\vgaddam\\source\\repos\\LeetCode\\LeetCodeLambda\\LeetCodeLambda.csproj",
+        "projectName": "LeetCodeLambda",
+        "projectPath": "C:\\Users\\vgaddam\\source\\repos\\LeetCode\\LeetCodeLambda\\LeetCodeLambda.csproj",
+        "packagesPath": "C:\\Users\\vgaddam\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\vgaddam\\source\\repos\\LeetCode\\LeetCodeLambda\\obj\\",
+        "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
+        "configFilePaths": [
+          "C:\\Users\\vgaddam\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp2.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp2.1": {
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp2.1": {
+          "dependencies": {
+            "AWSSDK.Core": {
+              "target": "Package",
+              "version": "[3.3.103.68, )"
+            },
+            "AWSSDK.DynamoDBv2": {
+              "target": "Package",
+              "version": "[3.3.101.75, )"
+            },
+            "AWSSDK.S3": {
+              "target": "Package",
+              "version": "[3.3.108.2, )"
+            },
+            "Amazon.Lambda.APIGatewayEvents": {
+              "target": "Package",
+              "version": "[1.2.0, )"
+            },
+            "Amazon.Lambda.AspNetCoreServer": {
+              "target": "Package",
+              "version": "[3.1.0, )"
+            },
+            "Amazon.Lambda.Core": {
+              "target": "Package",
+              "version": "[1.1.0, )"
+            },
+            "Amazon.Lambda.Serialization.Json": {
+              "target": "Package",
+              "version": "[1.6.0, )"
+            },
+            "Microsoft.NETCore.App": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[2.1.0, )",
+              "autoReferenced": true
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.2, )"
+            }
+          },
+          "imports": [
+            "net461"
+          ],
+          "assetTargetFallback": true,
+          "warn": true
+        }
+      },
+      "runtimes": {
+        "rhel.7.2-x64": {
+          "#import": []
+        }
+      }
+    }
+  }
+}

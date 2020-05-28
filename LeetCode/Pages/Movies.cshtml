@@ -1,0 +1,363 @@
+﻿@page
+@model ServerlessApp.Pages.MoviesModel
+@addTagHelper *, Kendo.Mvc
+@using Kendo.Mvc.UI
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "Movies";
+    Layout = "~/Pages/_Layout.cshtml";
+}
+
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>-->
+@*<link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/bootstrap.min.css" />
+    <script src="~/js/bootstrap.js"></script>*@
+
+<script type="text/javascript">
+    var userData = null;
+    var oldMovieName = "";
+    var actorData = [];
+    $(document).ready(function myfunction() {
+
+        $.ajax({
+            url: "api/Movies/GetMovies",
+            dataType: "json",
+            crossdomain: true,
+            contentType: "application/json",
+            type: "GET",
+            //define a contentType of your request
+            secure: true,
+            //headers: {
+            //    "Access-Control-Allow-Origin": "*",
+            //    "Access-Control-Allow-Headers": "*"
+            //},
+            success: function (data) {
+                tblData = data
+                $.each(data, function (i, data) {
+                    var actorsData = data.table[i].actors;
+                    var actorsNames = actorNames(actorsData);
+                    userData = data;
+                    var Update = "<a name=LoginButton data-toggle= modal  data-target= #exampleModal onclick=updateMovie('" + this.itemArray[1] + "')  value=Update href=# id=btnUpdate>Update</a>";
+                    var Delete = "<a name=LoginBut onclick=DeleteRecord('" + this.itemArray[1] + "') href=# id=" + data.table[i].movieName + ">Delete</a>";
+                    var body = "<tr>";
+                    body += "<td id=" + data.table[i].movieName + ">" + data.table[i].movieName + "</td > ";
+                    body += "<td>" + data.table[i].dateOfRelease + "</td>";
+                    body += "<td>" + data.table[i].producer + "</td>";
+                    body += "<td>" + actorsNames.replace(/,\s*$/, "") + "</td>";
+                    body += "<td>" + Update + "  ||  " + Delete + "</td>";
+                    body += "</tr>";
+                    $(body).appendTo($(".tblData"));
+                });
+                $('#tblMovies').DataTable(
+                    //{
+                    //"scrollX": true
+                    //}
+                );
+            },
+            error: function (xhr, errorType, exception) {
+                var errorMessage = exception || xhr.statusText;
+                console.log(exception);
+                console.log(xhr);
+                alert(errorType + ";  " + errorMessage + " " + exception + "  Status:: " + xhr.statusText);
+            }
+        });
+
+
+    });
+
+    function actorNames(data) {
+        var names = "";
+        for (var i = 0; i < data.length; i++) {
+            names = names + data[i].actorName + ",";
+        }
+        return names;
+    }
+
+    function updateMovie(movieName) {
+        console.log(movieName);
+        getActorsData();
+        oldMovieName = movieName;
+        var body = "";
+        $(body).appendTo($("#slctActors"));
+        $('#txtMovieName').prop('disabled', true);
+
+        $.ajax({
+            url: "http://localhost:51502/api/Movies/" + movieName + "",
+
+            dataType: "json",
+            crossdomain: true,
+            contentType: "application/json",
+            type: "GET",
+            //define a contentType of your request
+            secure: true,
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*"
+            },
+            success: function (data) {
+                console.log(data);
+                tblData = data[0].table[0];
+                $('#txtMovieName').val(movieName);
+                $('#txtProducer').val(tblData.producer);
+
+                $("#txtReleaseDate").val(tblData.dateOfRelease);
+
+                $('#selectedFilters').children().remove();
+                var dataarray = [];
+                //    { name: "ActorName0", value: "value1" },
+                //    { name: "ActorName1", value: "value2" },
+                //    { name: "name3", value: "value3" },
+                //    { name: "name4", value: "value4" },
+                //    { name: "name5", value: "value5" },
+                //    { name: "name6", value: "value6" }
+
+                //body += "<input id='selectedFilters'>";
+                //$(body).appendTo($("#lblActors"));
+                for (var i = 0; i <= actorData.length - 1; i++) {
+                    var obj = {
+                        name: "ActorName" + i.toString(),
+                        value: actorData[i].actorName
+                    }
+                    dataarray.push(obj);
+                }
+                console.log(dataarray);
+                var multiselect = $('#selectedFilters').kendoMultiSelect({
+                    //autoBind: false,
+                    dataSource: dataarray,
+                    dataTextField: 'value',
+                    dataValueField: 'name',
+                    filter: 'contains',
+                    placeholder: "Select Actor....",
+                    delay: 0,
+                    minLength: 2,
+                    highlightFirst: true,
+                    ignoreCase: true,
+                    change: function (event) {
+                        console.log("change");
+                    }
+                }).data("kendoMultiSelect");
+
+                arrActors = [];
+
+                for (var j = 0; j < tblData.actors.length; j++) {
+                    for (var i = 0; i < dataarray.length; i++) {
+
+                        if (tblData.actors[j].actorName.includes(dataarray[i].value)) {
+                            arrActors.push(dataarray[i].value)
+                        }
+                    }
+                }
+                console.log("Actors Array :-" + arrActors);
+                multiselect.value(arrActors);
+            },
+            error: function (xhr, errorType, exception) {
+                var errorMessage = exception || xhr.statusText;
+                console.log(exception);
+                console.log(xhr);
+                alert(errorType + ";  " + errorMessage + " " + exception + "  Status:: " + xhr.statusText);
+            }
+        });
+
+        $("#exampleModal").modal('show');
+
+        $('#exampleModal').on('hidden.bs.modal', function () {
+            location.reload();
+        })
+
+    }
+
+    function getActorsData() {
+        $.ajax({
+            url: "api/Movies/GetActors",
+            dataType: "json",
+            //crossdomain: true,
+            //contentType: "application/json",
+            type: "GET",
+            //define a contentType of your request
+            secure: true,
+            success: function (resultdata) {
+                console.log(resultdata);
+                actorData = resultdata;
+                return resultdata;
+            },
+            error: function () {
+                return "Hello";
+            }
+        });
+        console.log("Enter2");
+    }
+
+
+    function DeleteRecord(movieName) {
+        console.log(document.getElementsByName("LoginBut"));
+        // var $row = $(this).closest("tr");    // Find the row
+        //var $text = $row.find("#tmp").text(); // Find the text
+        $.ajax({
+            url: "api/Movies/" + movieName,
+            crossdomain: true,
+            contentType: "application/json",
+            type: "DELETE",
+            success: function (result) {
+                console.log("success");
+                window.location.reload();
+            },
+            error: function (xhr, errorType, exception) {
+                var errorMessage = exception || xhr.statusText;
+                console.log(exception);
+                console.log(xhr);
+                alert(errorType + ";  " + exception + "  Status:: " + xhr.statusText);
+            }
+        });
+    }
+
+
+    function Savechanges() {
+        var moviename = $("#txtMovieName").val();
+        var frmdata = $("#frmUpdate").serialize();
+        var producername = $("#txtProducer").val();
+        var releasedate = $("#txtReleaseDate").val();
+        var actorNames = "";
+
+        $("#slctActors > option").each(function () {
+            //alert(this.text + ' ' + this.value);
+            actorNames = actorNames + this.value + ",";
+        });
+
+        var DataObject =
+        {
+            "Movies": [
+                {
+                    "MovieName": moviename,
+                    "Producer": producername,
+                    "DateOfRelease": releasedate,
+                    "actor": [
+                        {
+                            "ActorName": "Test2"
+                        }
+                    ]
+                }
+            ]
+        }
+
+        var dt = {
+            "MovieName": moviename,
+            "Producer": producername,
+            "DateOfRelease": releasedate,
+            "Actor": actorNames.substring(0, actorNames.length - 2)
+        }
+
+        $.ajax({
+            url: "http://localhost:51502/api/Movies/" + oldMovieName + "",
+            data: JSON.stringify(dt),
+            dataType: "json",
+            crossdomain: true,
+            contentType: "application/json; charset=utf-8",
+            type: "PUT",
+            //define a contentType of your request
+            secure: true,
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "*"
+            },
+            success: function (data) {
+                tblData = data
+                console.log(data);
+                $('#modal').modal('toggle');
+                window.location.reload(function myfunction() {
+                    $('#loading').hide();
+                });
+                //$.each(data, function (i, data) {
+                //    var actorsData = data.Table[i].Actors;
+                //    window.sessionStorage.setItem('data', data.Table[i]);
+                //    userData = data;
+                //    $('#txtMovieName').val(movieName);
+                //    $('#txtProducer').val(data.Table[i].Producer);
+                //    $("#txtReleaseDate").val(data.Table[i].DateOfRelease);
+                //    var body = "";
+                //    for (var i = 0; i <= actorsData.length - 1; i++) {
+                //        body += "<option id=" + i + ">" + actorsData[i].ActorName + "</option > ";
+                //        $(body).appendTo($("#slctActors"));
+                //    }
+
+                //});
+            },
+            error: function (xhr, errorType, exception) {
+                var errorMessage = exception || xhr.statusText;
+                console.log(exception);
+                console.log(xhr);
+                alert(errorType + ";  " + errorMessage + " " + exception + "  Status:: " + xhr.statusText);
+            }
+        });
+
+        console.log(data + "," + producername + "," + releasedate);
+    }
+
+</script>
+
+<div style="height:80px;">
+
+</div>
+
+<div class="container">
+    <div class="spinner-grow text-primary" role="status" id="loading">
+        <span class="sr-only">Loading...</span>
+    </div>
+
+    <table class="table" id="tblMovies" style="width:100%">
+        <thead>
+            <tr>
+                <th>MovieName</th>
+                <th>DateOfRelease</th>
+                <th>Producer</th>
+                <th>Actors</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody class="tblData"></tbody>
+    </table>
+
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Update Movie</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label>MovieName</label>
+                            <input asp-for="movies.MovieName" type="text" id="txtMovieName" placeholder="Producer" name="Producer" class="form-control" />
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label>Producer</label>
+                            <input asp-for="movies.Producer" type="text" id="txtProducer" placeholder="Producer" name="Producer" class="form-control" />
+                            @*<input type="text" id="txtProducer" placeholder="Producer" name="Producer" class="form-control" />*@
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="txtReleaseDate">DateOfRelease</label>
+                            @Html.Kendo().DatePicker().Name("datepicker").HtmlAttributes(new { @class = "form-control", @style = "width: 95%;", id = "txtreleaseDate" }).Format("MM/DD/YYYY")
+                            @*<input asp-for="movies.DateOfRelease" type="text" id="txtReleaseDate" class="form-control" name="ReleaseDate" style="width:65%" />*@
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="selectedFilters" id="lblActors">Actors</label>
+                            @*ui fluid dropdown*@
+                            @*<select id="slctActors" class="mdb-select colorful-select dropdown-primary md-form" multiple searchable="Search here.."></select>*@
+                            <input id='selectedFilters'>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="Savechanges()">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

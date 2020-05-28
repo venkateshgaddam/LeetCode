@@ -1,0 +1,71 @@
+﻿@page
+@model HelpModel
+@{
+    ViewData["Title"] = "Help";
+}
+<h2>Places to Find Additional Help.</h2>
+<script type="text/javascript">
+    var userData = null;
+    var oldMovieName = "";
+    var actorData = [];
+    $(document).ready(function myfunction() {
+        console.log("Entered the Ready Function");
+        $.ajax({
+            url: "https://l422q2oip1.execute-api.us-east-1.amazonaws.com/Dev/leetcode",
+            dataType: "text",
+            crossdomain: true,
+            contentType: "application/json",
+            type: "GET",
+            //define a contentType of your request
+            secure: true,
+            headers: {
+                "Access-Control-Allow-Origin": '*',
+                "Access-Control-Allow-Headers": '*',
+            },
+            success: function (data) {
+                console.log(data);
+                //tblData = data
+                //$.each(data, function (i, data) {
+                //    var actorsData = data.table[i].actors;
+                //    var actorsNames = actorNames(actorsData);
+                //    userData = data;
+                //    var Update = "<a name=LoginButton data-toggle= modal  data-target= #exampleModal onclick=updateMovie('" + this.itemArray[1] + "')  value=Update href=# id=btnUpdate>Update</a>";
+                //    var Delete = "<a name=LoginBut onclick=DeleteRecord('" + this.itemArray[1] + "') href=# id=" + data.table[i].movieName + ">Delete</a>";
+                //    var body = "<tr>";
+                //    body += "<td id=" + data.table[i].movieName + ">" + data.table[i].movieName + "</td > ";
+                //    body += "<td>" + data.table[i].dateOfRelease + "</td>";
+                //    body += "<td>" + data.table[i].producer + "</td>";
+                //    body += "<td>" + actorsNames.replace(/,\s*$/, "") + "</td>";
+                //    body += "<td>" + Update + "  ||  " + Delete + "</td>";
+                //    body += "</tr>";
+                //    $(body).appendTo($(".tblData"));
+                //});
+                //$('#tblMovies').DataTable(
+                //    //{
+                //    //"scrollX": true
+                //    //}
+                //);
+            },
+            error: function (xhr, errorType, exception) {
+                var errorMessage = exception || xhr.statusText;
+                console.log(exception);
+                console.log(xhr);
+                console.log(errorType);
+                //alert(errorType + ";  " + errorMessage + " " + exception + "  Status:: " + xhr.statusText);
+            }
+        });
+
+
+    });
+</script>
+
+
+@*//*@
+<p></p>
+<ul>
+    <li><a href="https://github.com/aws/aws-lambda-dotnet">AWS Lambda .NET Core GitHub Repository</a></li>
+    <li><a href="https://github.com/aws/aws-sdk-net">AWS SDK for .NET GitHub Repository</a></li>
+    <li><a href="https://aws.amazon.com/blogs/developer/category/net/">AWS .NET Developer Blog</a></li>
+    <li><a href="https://twitter.com/awsfornet">AWS .NET Twitter Handle</a></li>
+    <li><a href="https://aws.amazon.com/documentation/sdk-for-net/">AWS .NET Developer Guide</a></li>
+</ul>

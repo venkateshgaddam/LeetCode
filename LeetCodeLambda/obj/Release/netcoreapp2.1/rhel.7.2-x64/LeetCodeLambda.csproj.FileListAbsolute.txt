@@ -1,0 +1,11 @@
+C:\Users\vgaddam\source\repos\LeetCode\LeetCodeLambda\bin\Release\netcoreapp2.1\rhel.7.2-x64\LeetCodeLambda.deps.json
+C:\Users\vgaddam\source\repos\LeetCode\LeetCodeLambda\bin\Release\netcoreapp2.1\rhel.7.2-x64\LeetCodeLambda.runtimeconfig.json
+C:\Users\vgaddam\source\repos\LeetCode\LeetCodeLambda\bin\Release\netcoreapp2.1\rhel.7.2-x64\LeetCodeLambda.runtimeconfig.dev.json
+C:\Users\vgaddam\source\repos\LeetCode\LeetCodeLambda\bin\Release\netcoreapp2.1\rhel.7.2-x64\LeetCodeLambda.dll
+C:\Users\vgaddam\source\repos\LeetCode\LeetCodeLambda\bin\Release\netcoreapp2.1\rhel.7.2-x64\LeetCodeLambda.pdb
+C:\Users\vgaddam\source\repos\LeetCode\LeetCodeLambda\obj\Release\netcoreapp2.1\rhel.7.2-x64\LeetCodeLambda.csprojAssemblyReference.cache
+C:\Users\vgaddam\source\repos\LeetCode\LeetCodeLambda\obj\Release\netcoreapp2.1\rhel.7.2-x64\LeetCodeLambda.csproj.CoreCompileInputs.cache
+C:\Users\vgaddam\source\repos\LeetCode\LeetCodeLambda\obj\Release\netcoreapp2.1\rhel.7.2-x64\LeetCodeLambda.AssemblyInfoInputs.cache
+C:\Users\vgaddam\source\repos\LeetCode\LeetCodeLambda\obj\Release\netcoreapp2.1\rhel.7.2-x64\LeetCodeLambda.AssemblyInfo.cs
+C:\Users\vgaddam\source\repos\LeetCode\LeetCodeLambda\obj\Release\netcoreapp2.1\rhel.7.2-x64\LeetCodeLambda.dll
+C:\Users\vgaddam\source\repos\LeetCode\LeetCodeLambda\obj\Release\netcoreapp2.1\rhel.7.2-x64\LeetCodeLambda.pdb
